@@ -1,26 +1,23 @@
-﻿using System;
-using System.Threading;
-using Life;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Conway
 {
-    class Program
+    static class Program
     {
-        public static void Main(string[] args)
+        /// <summary>
+        ///  The main entry point for the application.
+        /// </summary>
+        [STAThread]
+        static void Main()
         {
-            Game.SetBoardSize(20, 20);
-            Game.StartConfig(new int[,] {
-                {1, 1},
-                {1, 0},
-                {1, 2}
-            });
-            Console.Clear();
-            while (!Console.KeyAvailable || Console.ReadKey(true).Key != ConsoleKey.Enter)
-            {
-                Game.Draw();
-                Game.Update();
-                Thread.Sleep(250);
-            }
+            Application.SetHighDpiMode(HighDpiMode.SystemAware);
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new Form1());
         }
     }
 }

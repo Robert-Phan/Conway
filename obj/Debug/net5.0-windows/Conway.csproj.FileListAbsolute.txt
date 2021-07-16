@@ -1,0 +1,16 @@
+D:\EthansFolder\CSharp\Conway\bin\Debug\net5.0-windows\Conway.exe
+D:\EthansFolder\CSharp\Conway\bin\Debug\net5.0-windows\Conway.deps.json
+D:\EthansFolder\CSharp\Conway\bin\Debug\net5.0-windows\Conway.runtimeconfig.json
+D:\EthansFolder\CSharp\Conway\bin\Debug\net5.0-windows\Conway.runtimeconfig.dev.json
+D:\EthansFolder\CSharp\Conway\bin\Debug\net5.0-windows\Conway.dll
+D:\EthansFolder\CSharp\Conway\bin\Debug\net5.0-windows\ref\Conway.dll
+D:\EthansFolder\CSharp\Conway\bin\Debug\net5.0-windows\Conway.pdb
+D:\EthansFolder\CSharp\Conway\obj\Debug\net5.0-windows\Conway.csproj.AssemblyReference.cache
+D:\EthansFolder\CSharp\Conway\obj\Debug\net5.0-windows\Conway.GeneratedMSBuildEditorConfig.editorconfig
+D:\EthansFolder\CSharp\Conway\obj\Debug\net5.0-windows\Conway.AssemblyInfoInputs.cache
+D:\EthansFolder\CSharp\Conway\obj\Debug\net5.0-windows\Conway.AssemblyInfo.cs
+D:\EthansFolder\CSharp\Conway\obj\Debug\net5.0-windows\Conway.csproj.CoreCompileInputs.cache
+D:\EthansFolder\CSharp\Conway\obj\Debug\net5.0-windows\Conway.dll
+D:\EthansFolder\CSharp\Conway\obj\Debug\net5.0-windows\ref\Conway.dll
+D:\EthansFolder\CSharp\Conway\obj\Debug\net5.0-windows\Conway.pdb
+D:\EthansFolder\CSharp\Conway\obj\Debug\net5.0-windows\Conway.genruntimeconfig.cache
