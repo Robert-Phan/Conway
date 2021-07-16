@@ -11,10 +11,6 @@ namespace Life
         public static void SetBoardSize(int x = 32, int y = 32)
         {
             width = x; height = y;
-            //x is multiplied by two because each width is two characters
-            //there's a "+2" at the end for buffer
-            // Console.SetWindowSize(x*2+1, y+1); 
-            // Console.SetBufferSize(x*2+1, y+1);
         }
 
         //draws results to console

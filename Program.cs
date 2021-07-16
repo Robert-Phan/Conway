@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Threading;
-using System.Windows.Markup;
-
 using Life;
 
 namespace Conway
@@ -24,6 +22,5 @@ namespace Conway
                 Thread.Sleep(250);
             }
         }
-
     }
 }

@@ -5,7 +5,6 @@ D:\EthansFolder\CSharp\Conway\bin\Debug\net5.0\Conway.runtimeconfig.dev.json
 D:\EthansFolder\CSharp\Conway\bin\Debug\net5.0\Conway.dll
 D:\EthansFolder\CSharp\Conway\bin\Debug\net5.0\ref\Conway.dll
 D:\EthansFolder\CSharp\Conway\bin\Debug\net5.0\Conway.pdb
-D:\EthansFolder\CSharp\Conway\obj\Debug\net5.0\Conway.csprojAssemblyReference.cache
 D:\EthansFolder\CSharp\Conway\obj\Debug\net5.0\Conway.GeneratedMSBuildEditorConfig.editorconfig
 D:\EthansFolder\CSharp\Conway\obj\Debug\net5.0\Conway.AssemblyInfoInputs.cache
 D:\EthansFolder\CSharp\Conway\obj\Debug\net5.0\Conway.AssemblyInfo.cs
@@ -14,3 +13,4 @@ D:\EthansFolder\CSharp\Conway\obj\Debug\net5.0\Conway.dll
 D:\EthansFolder\CSharp\Conway\obj\Debug\net5.0\ref\Conway.dll
 D:\EthansFolder\CSharp\Conway\obj\Debug\net5.0\Conway.pdb
 D:\EthansFolder\CSharp\Conway\obj\Debug\net5.0\Conway.genruntimeconfig.cache
+D:\EthansFolder\CSharp\Conway\obj\Debug\net5.0\Conway.csproj.AssemblyReference.cache
