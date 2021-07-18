@@ -17,7 +17,7 @@ namespace Conway
         public Form1()
         {
             InitializeComponent();
-            SetDimensions(20, 20);
+            SetDimensions(25, 25);
         }
 
         /// <summary>
@@ -47,7 +47,7 @@ namespace Conway
             this.components = new System.ComponentModel.Container();
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = Color.LightGray;
-            this.ClientSize = new System.Drawing.Size(300, 400);
+            this.ClientSize = new System.Drawing.Size(600, 600);
             this.Text = "Form1";
         }
 
@@ -60,9 +60,9 @@ namespace Conway
             Game.SetBoardSize(width, height);
 
             var grid = new TableLayoutPanel();
-            // grid.Padding = new Padding(0, 0, 0, 20);
-            // grid.Anchor = (AnchorStyles.None|AnchorStyles.None);
-            grid.Dock = DockStyle.Fill;
+            grid.Size = new Size(21 * width, 21 * height);
+            grid.Anchor = AnchorStyles.None;
+            // grid.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single;
 
             grid.ColumnCount = width;
             for (int i = 0; i < width; i++)
@@ -80,14 +80,17 @@ namespace Conway
             {
                 for (int j = 0; j < height; j++)
                 {
-                    var t = new Label() {BackColor = Color.Black, Size = new Size(20, 20),
+                    var t = new Label() {BackColor = Color.Black, Size = new Size(16, 16),
                     Anchor = (AnchorStyles.None|AnchorStyles.None)};
                     grid.Controls.Add(t, i, j);
                 }
             }
 
-            this.ClientSize = new Size(25 * width, 25 * height);
-            Controls.Add(grid);
+            this.ClientSize = new Size((int) (21.75 * width),(int) (21.75 * height));
+            var center = new TableLayoutPanel() {Dock = DockStyle.Fill, 
+            ColumnCount = 1, RowCount = 1};
+            center.Controls.Add(grid);
+            Controls.Add(center);
         }
 
     }
