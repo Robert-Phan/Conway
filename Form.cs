@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 using Life;
 
-namespace Conway
+namespace GUI
 {
     class GUI : Form
     {
@@ -18,10 +18,46 @@ namespace Conway
         {
             InitializeComponent();
             SetDimensions(25, 25);
-            UpdateBoard(new bool[,] {
-                {true, false, false},
-                {false, false, true},
-                {true, false, true}
+            Game.CreateBoard(new int[,] {
+                {1, 0},
+                {2, 0},
+                {0, 1},
+                {1, 1},
+                {2, 2}
+            });
+
+            var t = new Timer() {Interval = 1};
+            t.Tick += new EventHandler((Object source, EventArgs e) => {
+                t.Stop();
+                this.Draw(Game.board);
+            });
+            t.Start();
+
+            var timer = new Timer() {Interval = 100};
+            Grid.Click += new EventHandler((Object source, EventArgs e) => {
+                timer.Enabled = timer.Enabled ? false : true;
+            });
+            timer.Tick += new EventHandler((Object source, EventArgs e) => {
+                this.Draw(Game.board);
+                Game.Update();
+            });
+        }
+        private void MainLoop()
+        {
+            Game.CreateBoard(new int[,] {
+                {1, 0},
+                {2, 0},
+                {0, 1},
+                {1, 1},
+                {2, 2}
+            });
+            var timer = new Timer() {Interval = 250};
+            Grid.Click += new EventHandler((Object source, EventArgs e) => {
+                timer.Enabled = timer.Enabled ? false : true;
+            });
+            timer.Tick += new EventHandler((Object source, EventArgs e) => {
+                this.Draw(Game.board);
+                Game.Update();
             });
         }
 
@@ -58,10 +94,6 @@ namespace Conway
         TableLayoutPanel Grid = new();
         public void SetDimensions(int width, int height)
         {
-            // if (width <= 8 || height <= 8 )
-            // {
-            //     throw new Exception("No dimensions value under 8 are allowed.");
-            // }
             Game.SetBoardSize(width, height);
 
             Grid.Anchor = AnchorStyles.None;
@@ -76,22 +108,12 @@ namespace Conway
             {
                 Grid.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 19));
             }
-
             Grid.RowCount = height;
             for (int i = 0; i < height; i++)
             {
                 Grid.RowStyles.Add(new RowStyle(SizeType.Absolute, 19));
             }
 
-            // for (int i = 0; i < width; i++)
-            // {
-            //     for (int j = 0; j < height; j++)
-            //     {
-            //         var t = new Label() {BackColor = Color.Black, Size = new Size(16, 16),
-            //         Anchor = (AnchorStyles.None|AnchorStyles.None)};
-            //         grid.Controls.Add(t, i, j);
-            //     }
-            // }
             this.ClientSize = new Size((int)(23 * width), (int)(23 * height));
             var center = new TableLayoutPanel()
             {
@@ -102,25 +124,26 @@ namespace Conway
             center.Controls.Add(Grid);
             Controls.Add(center);
         }
-        private void UpdateBoard(bool[,] board)
+        private void Draw(bool[,] board)
         {
-            Grid.Click += new EventHandler((Object sender, EventArgs e) =>
+            // Gets empty square
+            for (int i = 0; i < board.GetLength(0); i++)
             {
-                for (int i = 0; i < board.GetLength(0); i++)
+                for (int j = 0; j < board.GetLength(1); j++)
                 {
-                    for (int j = 0; j < board.GetLength(1); j++)
+                    // ? The coords account for the size of the cells and pixels
+                    int x = j * 20 + 1, y = i * 20 + 1;
+                    if (board[i, j])
                     {
-                        if (board[i, j])
-                        {
-                            int x = j * 20 + 1, y = i * 20 + 1;
-                            Grid.CreateGraphics().FillRectangle(new SolidBrush(Color.Azure), 
-                            x, y, 19, 19);
-                        }
+                        Grid.CreateGraphics().FillRectangle(new SolidBrush(Color.Black), 
+                        x, y, 19, 19);
+                    } else {
+                        Grid.CreateGraphics().FillRectangle(new SolidBrush(Color.LightGray), 
+                        x, y, 19, 19);
                     }
                 }
-            });
+            }
         }
-
     }
 }
 
