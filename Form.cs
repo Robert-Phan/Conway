@@ -14,44 +14,20 @@ namespace GUI
 {
     class GUI : Form
     {
-        public GUI()
+        public GUI(int[,] board, int width = 40, int height = 40,int speed = 200, int pixelSize = 15)
         {
             InitializeComponent();
-            SetDimensions(25, 25);
-            Game.CreateBoard(new int[,] {
-                {1, 0},
-                {2, 0},
-                {0, 1},
-                {1, 1},
-                {2, 2}
-            });
-
-            var t = new Timer() {Interval = 1};
-            t.Tick += new EventHandler((Object source, EventArgs e) => {
-                t.Stop();
-                this.Draw(Game.board);
-            });
-            t.Start();
-
-            var timer = new Timer() {Interval = 100};
-            Grid.Click += new EventHandler((Object source, EventArgs e) => {
-                timer.Enabled = timer.Enabled ? false : true;
-            });
-            timer.Tick += new EventHandler((Object source, EventArgs e) => {
-                this.Draw(Game.board);
-                Game.Update();
-            });
+            PixelSize = pixelSize;
+            SetDimensions(width, height);
+            Game.CreateBoard(board);
+            MainLoop(speed);
         }
-        private void MainLoop()
+        
+        private void MainLoop(int speed)
         {
-            Game.CreateBoard(new int[,] {
-                {1, 0},
-                {2, 0},
-                {0, 1},
-                {1, 1},
-                {2, 2}
-            });
-            var timer = new Timer() {Interval = 250};
+            FirstDraw();
+
+            var timer = new Timer() {Interval = speed};
             Grid.Click += new EventHandler((Object source, EventArgs e) => {
                 timer.Enabled = timer.Enabled ? false : true;
             });
@@ -61,6 +37,8 @@ namespace GUI
             });
         }
 
+        #region Pregenerated stuff
+        
         /// <summary>
         ///  Required designer variable.
         /// </summary>
@@ -72,7 +50,7 @@ namespace GUI
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
-            if (disposing && (components != null))
+            if (disposing && (components != null)) 
             {
                 components.Dispose();
             }
@@ -88,10 +66,12 @@ namespace GUI
             this.components = new System.ComponentModel.Container();
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = Color.LightGray;
-            this.ClientSize = new System.Drawing.Size(600, 600);
             this.Text = "Form1";
         }
+        #endregion
+        #region Creates the grid.
         TableLayoutPanel Grid = new();
+        int PixelSize;
         public void SetDimensions(int width, int height)
         {
             Game.SetBoardSize(width, height);
@@ -100,21 +80,21 @@ namespace GUI
             // ? The size of the grid is dependant on both
             // ? the size of the cell itself and
             // ? the extra pixels of the border
-            Grid.Size = new Size((int)(20 * width) + 1, (int)(20 * height) + 1);
+            Grid.Size = new Size((int)((PixelSize+1) * width) + 1, (int)((PixelSize+1) * height) + 1);
             Grid.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single;
 
             Grid.ColumnCount = width;
             for (int i = 0; i < width; i++)
             {
-                Grid.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 19));
+                Grid.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, PixelSize));
             }
             Grid.RowCount = height;
             for (int i = 0; i < height; i++)
             {
-                Grid.RowStyles.Add(new RowStyle(SizeType.Absolute, 19));
+                Grid.RowStyles.Add(new RowStyle(SizeType.Absolute, PixelSize));
             }
-
-            this.ClientSize = new Size((int)(23 * width), (int)(23 * height));
+                
+            this.ClientSize = new Size((PixelSize+2) * width, (PixelSize+2) * height);
             var center = new TableLayoutPanel()
             {
                 Dock = DockStyle.Fill,
@@ -124,6 +104,9 @@ namespace GUI
             center.Controls.Add(Grid);
             Controls.Add(center);
         }
+        #endregion
+        
+        #region Updates the board
         private void Draw(bool[,] board)
         {
             // Gets empty square
@@ -132,18 +115,29 @@ namespace GUI
                 for (int j = 0; j < board.GetLength(1); j++)
                 {
                     // ? The coords account for the size of the cells and pixels
-                    int x = j * 20 + 1, y = i * 20 + 1;
+                    int x = j * (PixelSize+1) + 1;
+                    int y = i * (PixelSize+1) + 1;
                     if (board[i, j])
                     {
                         Grid.CreateGraphics().FillRectangle(new SolidBrush(Color.Black), 
-                        x, y, 19, 19);
+                        x, y, PixelSize, PixelSize);
                     } else {
                         Grid.CreateGraphics().FillRectangle(new SolidBrush(Color.LightGray), 
-                        x, y, 19, 19);
+                        x, y, PixelSize, PixelSize);
                     }
                 }
             }
         }
+        private void FirstDraw()
+        {
+            var t = new Timer() {Interval = 1};
+            t.Tick += new EventHandler((Object source, EventArgs e) => {
+                t.Stop();
+                this.Draw(Game.board);
+            });
+            t.Start();
+        }
+        #endregion
     }
 }
 

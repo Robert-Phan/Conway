@@ -17,7 +17,14 @@ namespace Conway
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new GUI.GUI());
+            var t = new GUI.GUI(new int[,] {
+                {11, 20},
+                {10, 21},
+                {11, 21},
+                {12, 22},
+                {10, 22}
+            }, speed: 50);
+            Application.Run(t);
         }
     }
 }
