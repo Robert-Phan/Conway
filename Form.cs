@@ -20,22 +20,24 @@ namespace GUI
             PixelSize = pixelSize;
             SetDimensions(width, height);
             Game.CreateBoard(board);
+            Controls.Add(controlLine);
             MainLoop(speed);
         }
-        
+        Timer timer = new();
         private void MainLoop(int speed)
         {
             FirstDraw();
 
-            var timer = new Timer() {Interval = speed};
-            Grid.Click += new EventHandler((Object source, EventArgs e) => {
-                timer.Enabled = timer.Enabled ? false : true;
-            });
+            // var timer = new Timer() {Interval = speed};
+
+            controlLine.KeyPress += new KeyPressEventHandler(ProcessKey);
+
             timer.Tick += new EventHandler((Object source, EventArgs e) => {
                 this.Draw(Game.board);
                 Game.Update();
             });
         }
+        TextBox controlLine = new() {Dock = DockStyle.Bottom};
 
         #region Pregenerated stuff
         
@@ -69,6 +71,19 @@ namespace GUI
             this.Text = "Form1";
         }
         #endregion
+        
+        #region Processes keys
+        private void ProcessKey(Object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == '\r') 
+            {
+                if (controlLine.Text == "start") timer.Enabled = true;
+                if (controlLine.Text == "stop") timer.Enabled = false;
+            }
+        }
+
+        #endregion
+
         #region Creates the grid.
         TableLayoutPanel Grid = new();
         int PixelSize;

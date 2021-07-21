@@ -13,23 +13,6 @@ namespace Life
             width = x; height = y;
         }
 
-        //draws results to console
-        //! Delete this later
-        // public static void Draw()
-        // {
-        //     var output = new StringBuilder();
-        //     for (int y = 0; y < height; y++)
-        //     {
-        //         for (int x = 0; x < width; x++)
-        //         {
-        //             output.Append(board[x, y] ? "  " : "\u2588\u2588"); //Blank = live, block = dead         
-        //         }
-        //         output.Append('\n');
-        //     }
-        //     Console.SetCursorPosition(0, 0);
-        //     Console.Write(output.ToString());
-        // }
-        //determines the starting configuration
         public static void CreateBoard(int[,] input)
         {
             board = new bool[width, height];
