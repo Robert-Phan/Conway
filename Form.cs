@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -24,20 +24,18 @@ namespace GUI
             MainLoop(speed);
         }
         Timer timer = new();
+        TextBox controlLine = new() {Dock = DockStyle.Bottom, AcceptsReturn = true, Multiline = true};
         private void MainLoop(int speed)
         {
             FirstDraw();
 
-            // var timer = new Timer() {Interval = speed};
-
             controlLine.KeyPress += new KeyPressEventHandler(ProcessKey);
 
             timer.Tick += new EventHandler((Object source, EventArgs e) => {
-                this.Draw(Game.board);
+                this.Draw();
                 Game.Update();
             });
         }
-        TextBox controlLine = new() {Dock = DockStyle.Bottom};
 
         #region Pregenerated stuff
         
@@ -77,9 +75,61 @@ namespace GUI
         {
             if (e.KeyChar == '\r') 
             {
-                if (controlLine.Text == "start") timer.Enabled = true;
-                if (controlLine.Text == "stop") timer.Enabled = false;
+                var input = controlLine.Text;
+                if (Regex.Match(input, @"[sS]tart|[rR]un").Success) timer.Enabled = true;
+                else if (Regex.Match(input, "[sS]top").Success) timer.Enabled = false;
+                else if (Regex.Match(input, @"\d+, *\d+").Success) AddCoords(input);
+                else if (Regex.Match(input, @"(\d*(b|o|\$))+").Success) RLE(input);
+                controlLine.Text = "";
             }
+        }
+
+        private void AddCoords(string text)
+        {
+            var g = text.Split(',');
+            int y = Convert.ToInt16(g[0]), x = Convert.ToInt16(g[1]);
+            Game.board[x, y] = true;
+            Draw();
+        }
+
+        private void RLE(string rle)
+        {
+            List<int[]> results = new();
+            int x = 0, y = 0;
+
+            var g = Regex.Matches(rle, @"\d*(b|o|\$)");
+            foreach (Match match in g) 
+            {
+                string t = match.Value;
+                string tag = Regex.Match(t, @"b|o|\$").Value;
+                int count = Regex.IsMatch(t, @"\d+") ? 
+                Convert.ToInt16(Regex.Match(t, @"\d+").Value) : 1;
+
+                switch (tag)
+                {
+                    case "b": 
+                        x += count;
+                        break;
+                    case "o":
+                        for (int i = 0; i < count; i++)
+                        {
+                            results.Add(new int[] {x, y});
+                            x++;
+                        }
+                        break;
+                    case "$":
+                        x = 0;
+                        y += count;
+                        break;
+                }
+            }
+
+            foreach (int[] coords in results)
+            {
+                x = coords[1]; y = coords[0]; 
+                Game.board[x, y] = true;
+            }
+            Draw();
         }
 
         #endregion
@@ -89,7 +139,7 @@ namespace GUI
         int PixelSize;
         public void SetDimensions(int width, int height)
         {
-            Game.SetBoardSize(width, height);
+            Game.SetBoardSize(height, width);
 
             Grid.Anchor = AnchorStyles.None;
             // ? The size of the grid is dependant on both
@@ -122,8 +172,9 @@ namespace GUI
         #endregion
         
         #region Updates the board
-        private void Draw(bool[,] board)
+        private void Draw()
         {
+            var board = Game.board;
             // Gets empty square
             for (int i = 0; i < board.GetLength(0); i++)
             {
@@ -148,7 +199,7 @@ namespace GUI
             var t = new Timer() {Interval = 1};
             t.Tick += new EventHandler((Object source, EventArgs e) => {
                 t.Stop();
-                this.Draw(Game.board);
+                this.Draw();
             });
             t.Start();
         }

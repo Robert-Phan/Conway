@@ -23,7 +23,7 @@ namespace Conway
                 {11, 21},
                 {12, 22},
                 {10, 22}
-            }, speed: 50);
+            }, speed: 50, width: 50);
             Application.Run(t);
         }
     }
