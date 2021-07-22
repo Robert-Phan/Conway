@@ -14,12 +14,23 @@ namespace GUI
 {
     class GUI : Form
     {
-        public GUI(int[,] board, int width = 40, int height = 40,int speed = 200, int pixelSize = 15)
+        public GUI(int[,] board, int width = 45, int height = 55, int speed = 150, int pixelSize = 15)
         {
             InitializeComponent();
             PixelSize = pixelSize;
             SetDimensions(width, height);
             Game.CreateBoard(board);
+            Controls.Add(controlLine);
+            MainLoop(speed);
+        }
+        public GUI(string rle, int width = 50, int height = 50,
+        int speed = 150, int pixelSize = 15)
+        {
+            InitializeComponent();
+            PixelSize = pixelSize;
+            SetDimensions(width, height);
+            Game.CreateBoard(new int[,] {});
+            RLE(rle);
             Controls.Add(controlLine);
             MainLoop(speed);
         }
@@ -80,8 +91,20 @@ namespace GUI
                 else if (Regex.Match(input, "[sS]top").Success) timer.Enabled = false;
                 else if (Regex.Match(input, @"\d+, *\d+").Success) AddCoords(input);
                 else if (Regex.Match(input, @"(\d*(b|o|\$))+").Success) RLE(input);
+                else if (Regex.Match(input, "[cC]lear|[rR]estart|[wW]ipe").Success) ClearBoard();
                 controlLine.Text = "";
             }
+        }
+        private void ClearBoard()
+        {
+            for (int i = 0; i < Game.width; i++)
+            {
+                for (int j = 0; j < Game.height; j++)
+                {
+                    Game.board[j, i] = false;
+                }
+            }
+            Draw();
         }
 
         private void AddCoords(string text)
